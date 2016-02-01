@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using libAirports.Models;
-namespace libAirports
+namespace libAirports.Models
 {
     public class AirportsApi : IAiports
     {
