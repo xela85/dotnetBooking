@@ -1,9 +1,7 @@
-﻿namespace libHotelReservations
+﻿namespace libHotelReservations.Models
 {
     using System;
-    using libHotels.Models;
     using System.Data.Entity;
-    using System.Linq;
 
     public class HotelReservationContext : DbContext
     {

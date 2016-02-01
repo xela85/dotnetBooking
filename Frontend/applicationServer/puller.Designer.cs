@@ -1,6 +1,6 @@
 ﻿namespace applicationServer
 {
-    partial class Service1
+    partial class Puller
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.
