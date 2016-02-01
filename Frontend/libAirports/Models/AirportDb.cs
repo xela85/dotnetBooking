@@ -33,7 +33,12 @@ namespace libAirports.Models
                 return db.Flights.Where(x => x.ArrivalAirport.Code == code).Select(a => a.DepartureAirport);
             }
 
-            public bool FlightExists(string departureCityCode, string arrivalCityCode)
+            public IEnumerable<Airport> ByCity(String city)
+            {
+                return db.Airports.Where(x => x.City.ToLower().Contains(city.ToLower()));
+            }
+
+        public bool FlightExists(string departureCityCode, string arrivalCityCode)
             {
                 return db.Flights.Count(f =>
                     f.DepartureAirport.Code == departureCityCode

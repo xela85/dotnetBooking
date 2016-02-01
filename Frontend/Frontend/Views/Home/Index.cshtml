@@ -2,9 +2,36 @@
     Layout = "~/Views/Shared/layout.cshtml";
 }
 <div ng-controller="HomeController">
-    <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-        <ui-gmap-markers models="markers"
-                         coords="'coords'" fit="true">
-        </ui-gmap-markers>
-    </ui-gmap-google-map>
+    <h1 ng-if="!ready">Chargement des données en cours</h1>
+    <div class="row" ng-if="ready">
+        <div class="col s4">
+            <form>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">flight takeoff</i>
+                        <input id="icon_prefix" type="text" class="validate" ng-model="airportCity">
+                        <label for="icon_prefix">Airport city</label>
+                        <a class="waves-effect waves-light btn" ng-class="{'disabled': airportCity == ''}" ng-click="loadAirportsByCity(airportCity)">Search airports in {{airportCity}}</a>
+                    </div>
+                    <!--<div class="input-field col s12">
+                        <i class="material-icons prefix">home</i>
+                        <input id="icon_telephone" type="tel" class="validate">
+                        <label for="icon_telephone">Hotel</label>
+                    </div>-->
+                </div>
+            </form>
+        </div>
+        <div class="col s8">
+            <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                <ui-gmap-markers models="airports"
+                                 coords="'coords'" fit="true" doCluster=true click="onClickAirport">
+                    <ui-gmap-windows show="show">
+                        <div ng-non-bindable>{{name}} <a class="waves-effect waves-light btn">Select</a></div>
+                        
+                    </ui-gmap-windows>
+                </ui-gmap-markers>
+            </ui-gmap-google-map>
+        </div>
+    </div>
+    
 </div>

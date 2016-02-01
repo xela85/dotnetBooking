@@ -41,5 +41,11 @@ namespace frontend.Controllers
         {
             return airports.To(code);
         }
+        [HttpGet]
+        [Route("api/airports/byCity/{city}")]
+        public IEnumerable<Airport> City(String city)
+        {
+            return airports.ByCity(city);
+        }
     }
 }
