@@ -18,12 +18,15 @@
         // Ajoutez un DbSet pour chaque type d'entité à inclure dans votre modèle. Pour plus d'informations 
         // sur la configuration et l'utilisation du modèle Code First, consultez http://go.microsoft.com/fwlink/?LinkId=390109.
 
-        public virtual DbSet<Hotel> MyHotels { get; set; }
+        public virtual DbSet<Hotel> Hotels { get; set; }
     }
 
     public class Hotel
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string City { get; set; }
+        public int Lat { get; set; }
+        public int Long { get; set; }
     }
 }
