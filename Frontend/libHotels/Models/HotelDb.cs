@@ -13,7 +13,7 @@ namespace libHotels.Models
 
         public IEnumerable<Hotel> FromCity(string city)
         {
-            return db.Hotels.Where(h => h.City == city);
+            return db.Hotels.Where(h => h.City.ToLower().Contains(city));
         }
 
         public IEnumerable<Hotel> GetHotels()
