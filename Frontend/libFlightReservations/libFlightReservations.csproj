@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\FlightReservationContext.cs" />
+    <Compile Include="Models\FlightReservationDb.cs" />
+    <Compile Include="Models\IFlightReservationsApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
