@@ -10,17 +10,11 @@ namespace libHotelReservations.Models
     {
         private HotelReservationContext db = new HotelReservationContext();
 
-        bool IHotelReservationsApi.book(HotelReservation reservation)
+        void IHotelReservationsApi.book(HotelReservation reservation)
         {
-            try
-            {
                 db.HotelReservations.Add(reservation);
                 db.SaveChanges();
-                return true;
-            } catch
-            {
-                return false;
-            }
+            
         }
 
         IEnumerable<HotelReservation> IHotelReservationsApi.FromHotel(int hotelId)

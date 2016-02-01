@@ -10,6 +10,6 @@ namespace libHotelReservations.Models
     {
         IEnumerable<HotelReservation> GetHotelReservations();
         IEnumerable<HotelReservation> FromHotel(int hotelId);
-        bool book(HotelReservation reservation);
+        void book(HotelReservation reservation);
     }
 }
