@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="~/Content/materialize/css/materialize.css" media="screen,projection" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.net booking</title>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">.net booking</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="sass.html">Réserver</a></li>
+                <li><a href="badges.html">A propos</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" ng-app="app">
+        @RenderBody()
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/materialize/materialize.min.js"></script>
+    <script type="text/javascript" src='~/Scripts/lodash.min.js'></script>
+    <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/angular-google-maps.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/Home/HomeController.js"></script>
+</body>
+</html>
