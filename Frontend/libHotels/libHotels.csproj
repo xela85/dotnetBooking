@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\HotelContext.cs" />
+    <Compile Include="Models\HotelDb.cs" />
+    <Compile Include="Models\IHotels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
