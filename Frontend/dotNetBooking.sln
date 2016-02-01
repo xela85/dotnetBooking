@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{EC80669C-A9F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "frontend", "frontend\frontend.csproj", "{4998108A-BDA1-498C-946B-D4E4227C9146}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{ADE166C7-14EF-42F1-B51C-8281EB553206}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libAirports", "libAirports\libAirports.csproj", "{5A459071-AD14-4F86-AF03-6304FBBD43C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +21,16 @@ Global
 		{4998108A-BDA1-498C-946B-D4E4227C9146}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4998108A-BDA1-498C-946B-D4E4227C9146}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4998108A-BDA1-498C-946B-D4E4227C9146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A459071-AD14-4F86-AF03-6304FBBD43C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A459071-AD14-4F86-AF03-6304FBBD43C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A459071-AD14-4F86-AF03-6304FBBD43C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A459071-AD14-4F86-AF03-6304FBBD43C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4998108A-BDA1-498C-946B-D4E4227C9146} = {EC80669C-A9F9-4E0D-8738-C6E642E97108}
+		{5A459071-AD14-4F86-AF03-6304FBBD43C5} = {ADE166C7-14EF-42F1-B51C-8281EB553206}
 	EndGlobalSection
 EndGlobal
