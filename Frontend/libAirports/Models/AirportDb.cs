@@ -35,23 +35,24 @@ namespace libAirports.Models
 
             public bool FlightExists(string departureCityCode, string arrivalCityCode)
             {
-                return db.Flights.Any(f =>
+                return db.Flights.Count(f =>
                     f.DepartureAirport.Code == departureCityCode
                     && f.ArrivalAirport.Code == arrivalCityCode
-                    );
+                    )>0;
             }
 
             public bool AddAirports(IEnumerable<Airport> airports)
             {
                 try
                 {
-                    IEnumerable<Airport> toInsert = airports.Where(a => db.Airports.FirstOrDefault(x => x.Code == a.Code) == null);
+                    IEnumerable<Airport> toInsert = airports.Where(a => db.Airports.Count(x => x.Code == a.Code) == 0);
                     db.Airports.AddRange(toInsert);
                     db.SaveChanges();
                     return true;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                     return false;
                 }
             }
@@ -59,7 +60,8 @@ namespace libAirports.Models
             {
                 try
                 {
-                    IEnumerable<Flight> toInsert = flights.Where(x => FlightExists(x.DepartureAirport.Code, x.DepartureAirport.Code));
+                    IEnumerable<Flight> toInsert = flights.Where(x => !FlightExists(x.DepartureAirport.Code, x.DepartureAirport.Code));
+                    db.Flights.AddRange(flights);
                     db.SaveChanges();
                     return true;
                 }

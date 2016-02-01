@@ -42,11 +42,8 @@ namespace libAirports.Models
         public int Id { get; set; }
         [Index("CodeIndex", IsUnique = true), StringLength(3), Required]
         public String Code { get; set; }
-        [Required]
         public String Name { get; set; }
-        [Required]
         public String City { get; set; }
-        [Required]
         public String Country { get; set; }
         public String Timezone { get; set; }
         public double Lat { get; set; }

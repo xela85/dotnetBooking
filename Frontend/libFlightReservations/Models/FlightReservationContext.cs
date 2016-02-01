@@ -27,7 +27,6 @@
     {
         public int Id { get; set; }
         public int FlightId { get; set; }
-        public int HotelId { get; set; }
         public DateTime ArrivalDate { get; set; }
         public DateTime DepartureDate { get; set; }
     }
