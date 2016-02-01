@@ -29,16 +29,18 @@ namespace applicationServer
 
         protected override void OnStart(string[] args)
         {
+            flights.getFlights();
+            hotels.GetHotelReservations();
             MessageQueue queue = new MessageQueue(Reservation.QUEUE_PATH);
-            queue.ReceiveCompleted += new ReceiveCompletedEventHandler(readAndPeek);
-            queue.BeginReceive();
+            queue.PeekCompleted += new PeekCompletedEventHandler(readAndPeek);
+            queue.BeginPeek();
         }
 
         protected override void OnStop()
         {
         }
 
-        public void readAndPeek(object sender, ReceiveCompletedEventArgs args)
+        public void readAndPeek(object sender, PeekCompletedEventArgs args)
         {
             MessageQueue queue = (MessageQueue)sender;
             try
@@ -50,18 +52,19 @@ namespace applicationServer
                 Reservation reservation = (Reservation)msg.Body;
                 this.logger.WriteEntry("found hotel " + reservation.Hotel.HotelId);
                 saveReservation(reservation);
+                queue.Receive();
                 this.logger.WriteEntry("peek done");
             }
             catch (Exception e)
             {
                 this.logger.WriteEntry(e.Message);
             }
-            queue.BeginReceive();
+            queue.BeginPeek();
         }
 
         private void saveReservation(Reservation reservation)
         {
-            using (var txScope = new TransactionScope())
+            //using (var txScope = new TransactionScope())
             {
                 var hotelRes = new libHotelReservations.Models.HotelReservation();
                 hotelRes.DepartureDate = reservation.Hotel.DepartureDate;
