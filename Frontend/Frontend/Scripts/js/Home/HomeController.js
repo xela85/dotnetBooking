@@ -1,7 +1,4 @@
-﻿app.controller('HomeController', ['$scope', function ($scope) {
-    console.log("trollolo");
-    $scope.test = function()
-    {
-        alert('lol');
-    }
-}]);
+﻿app.controller('HomeController', function ($scope) {
+    $scope.map = { center: { latitude: 47.282949, longitude: -1.521396 }, zoom: 8 };
+    
+});
