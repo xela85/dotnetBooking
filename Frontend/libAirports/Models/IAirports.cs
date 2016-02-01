@@ -4,8 +4,8 @@ namespace libAirports.Models
 {
    public interface IAiports
     {
-        bool AddAirports(System.Collections.Generic.IEnumerable<Airport> airports);
-        bool AddFlights(System.Collections.Generic.IEnumerable<Flight> flights);
+        bool AddAirports(IEnumerable<Airport> airports);
+        bool AddFlights(IEnumerable<Flight> flights);
 
         bool FlightExists(string departureCityCode, string arrivalCityCode);
         IEnumerable<Airport> From(string code);
