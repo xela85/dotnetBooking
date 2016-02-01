@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pusher.data
+namespace data.messaging
 {
     public class Reservation
     {
-        public HotelReservation Hotel { get; set; }
+
+    public const String QUEUE_IP = "127.0.0.1";
+    public const String QUEUE_PATH = @".\private$\dotNetBooking";
+
+    public HotelReservation Hotel { get; set; }
         public FlightReservation Flight { get; set; }
     }
 
