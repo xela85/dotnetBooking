@@ -14,10 +14,10 @@
                     </div>
                     <div class="col s6">
                         <div class="card-panel grey lighten-5 z-depth-1">
-                                <span class="black-text">
-                                    <span ng-if="!airportDeparture">No airport selected yet.</span>
-                                    <span ng-if="airportDeparture">You have selected {{airportDeparture.model.name}}</span>
-                                </span>
+                            <span class="black-text">
+                                <span ng-if="!airportDeparture">No airport selected yet.</span>
+                                <span ng-if="airportDeparture">You have selected {{airportDeparture.model.name}}</span>
+                            </span>
                         </div>
                     </div>
                     <!--<div class="input-field col s12">
@@ -29,11 +29,11 @@
             </form>
         </div>
         <div class="col s8">
-            <ui-gmap-google-map center='map.center' zoom='map.zoom' >
+            <ui-gmap-google-map center='map.center' zoom='map.zoom'>
                 <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
                                   fit="false" icons='links.icons'></ui-gmap-polyline>
                 <ui-gmap-markers models="airports"
-                                 coords="'coords'" fit="true" doCluster=true click="onClickAirport" options="'options'" modelsbyref="false">
+                                 coords="'coords'" fit="true" doCluster=true click="onClickAirport" options="'options'" icon="'icon'" modelsbyref="false">
                 </ui-gmap-markers>
             </ui-gmap-google-map>
         </div>
