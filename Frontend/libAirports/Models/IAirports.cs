@@ -6,7 +6,6 @@ namespace libAirports.Models
     {
         bool AddAirports(IEnumerable<Airport> airports);
         bool AddFlights(IEnumerable<Flight> flights);
-
         bool FlightExists(string departureCityCode, string arrivalCityCode);
         IEnumerable<Airport> From(string code);
         IEnumerable<Airport> GetAirports();
