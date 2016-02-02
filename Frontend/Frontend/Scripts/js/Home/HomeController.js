@@ -7,10 +7,54 @@
         $scope.map = { center: { latitude: 47.282949, longitude: -1.521396 }, zoom: 8 };
         $scope.airportCity = '';
         $scope.airportsLinks = [];
+        $scope.cities = [];
+        $scope.autocompleteCityIsAllowed = true;
     }
-    
-    function getIconUrl(color)
+    $scope.handleChangeCity = function(city)
     {
+        console.log(city);
+        var verif = false
+        for(var i in $scope.cities)
+        {
+            if($scope.cities[i] === city)
+            {
+                
+                verif = true;
+                break;
+            }
+        }
+        if(verif)
+        {
+            console.log("verif est true");
+            autocompleteCityIsAllowed = false;
+            $scope.loadAirportsByCity(city);
+        } else
+        {
+            console.log("verif est false");
+            autocompleteCityIsAllowed = true;
+            $scope.autocompleteCity(city);
+        }
+    }
+    $scope.autocompleteCity = function (airportCity) {
+        if ($scope.autocompleteCityIsAllowed)
+        {
+            if (airportCity) {
+                $http({
+                    method: "GET",
+                    url: "/api/airports/AutocompleteCity/" + airportCity
+                }).then(function mySucces(response) {
+                    $scope.cities = response.data;
+                    console.log($scope.cities);
+                }, function myError(response) {
+                    // osef
+                });
+            } else {
+                $scope.cities = [];
+            }
+        }
+        
+    }
+    function getIconUrl(color) {
         return color === "blue" ? '../../../fonts/icons/airport_icon_blue.png' : '../../../fonts/icons/airport_icon_green.png';
 
     }
@@ -77,7 +121,7 @@
             $scope.airports.push($scope.airportArrival.model);
             // add airport departure marker
             $scope.airports.push($scope.airportDeparture.model);
-        }   
+        }
     }
 
     // load airports according to a specified city
@@ -92,7 +136,7 @@
             }).then(function mySucces(response) {
                 $scope.airports = [];
                 for (var i in response.data) {
-                    $scope.airports.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportDeparture', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name}, icon: generateMarkerIcon('blue')  });
+                    $scope.airports.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportDeparture', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name }, icon: generateMarkerIcon('blue') });
                 }
             }, function myError(response) {
                 // osef
@@ -109,7 +153,7 @@
             url: "/api/airports/from/" + departureCode
         }).then(function mySucces(response) {
             for (var i in response.data) {
-                $scope.airports.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportArrival', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name}, icon: generateMarkerIcon('blue')  });
+                $scope.airports.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportArrival', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name }, icon: generateMarkerIcon('blue') });
             }
             $scope.generatePathBetweenAirports()
         }, function myError(response) {

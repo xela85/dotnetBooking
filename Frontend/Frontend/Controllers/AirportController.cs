@@ -47,5 +47,11 @@ namespace frontend.Controllers
         {
             return airports.ByCity(city);
         }
+        [HttpGet]
+        [Route("api/airports/autocompleteCity/{city}")]
+        public IEnumerable<String> AutocompleteCity(String city)
+        {
+            return airports.AutocompleteCity(city);
+        }
     }
 }
