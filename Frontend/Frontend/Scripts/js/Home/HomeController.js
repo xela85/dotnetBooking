@@ -1,4 +1,4 @@
-﻿app.controller('HomeController', function ($scope, $http, $location, $timeout) {
+﻿app.controller('HomeController', function ($scope, $http) {
     // variable initialization
     $scope.init = function () {
         $scope.airportDeparture = null;
@@ -17,7 +17,6 @@
     }
     // to generate a airport icon
     function generateMarkerIcon(color) {
-        
         return { url: getIconUrl(color), scaledSize: new google.maps.Size(34, 44) };
     }
 
