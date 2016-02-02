@@ -4,45 +4,92 @@
 <div ng-controller="HomeController">
     <div class="row">
         <form>
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">flight</i>
-                    <input id="airport_departure" list="cities" type="text" class="validate" ng-model="airportCity" ng-model-options="{debounce: 1000}" ng-change="handleChangeCity(airportCity)">
-                    <datalist id="cities">
-                        <option ng-repeat="city in cities" value="{{city}}"></option>
-                    </datalist>
-                    <label for="airport_departure">Departure Airport City</label>
-                    <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-                        <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
-                                          fit="true" icons='links.icons'></ui-gmap-polyline>
-                        <ui-gmap-markers models="airports"
-                                         coords="'coords'" fit="true" doCluster=false click="onClickAirport" options="'options'" icon="'icon'" modelsbyref="false">
-                        </ui-gmap-markers>
-                    </ui-gmap-google-map>
-                </div>
-                <div class="col s6">
-                    <ul class="collapsible" data-collapsible="expandable">
-                        <li>
-                            <div class="collapsible-header">
-                            <i class="material-icons">flight_takeoff</i>
-                                Airport departure : <span ng-if="airportDeparture">{{airportDeparture.model.name}}</span>
-                                <span ng-if="!airportDeparture">please select an airport for your departure</span>
+            <div class="input-field col s6">
+                <i class="material-icons prefix">flight</i>
+                <input id="airport_departure" list="cities" type="text" class="validate" ng-model="airportCity" ng-model-options="{debounce: 1000}" ng-change="handleChangeCity(airportCity)">
+                <datalist id="cities">
+                    <option ng-repeat="city in cities" value="{{city}}"></option>
+                </datalist>
+                <label for="airport_departure">Departure Airport City</label>
+                <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                    <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
+                                      fit="true" icons='links.icons'></ui-gmap-polyline>
+                    <ui-gmap-markers models="airports"
+                                     coords="'coords'" fit="true" doCluster=false click="onClickAirport" options="'options'" icon="'icon'" modelsbyref="false">
+                    </ui-gmap-markers>
+                </ui-gmap-google-map>
+            </div>
+            <div class="col s6">
+
+                <ul class="tabs">
+                    <li class="tab col s4"><a class="active" href="#departure_tab"><i class="material-icons">flight_takeoff</i> Airport departure</a></li>
+                    <li class="tab col s4"><a href="#arrival_tab"><i class="material-icons">flight_land</i> Airport arrival</a></li>
+                    <li class="tab col s4 disabled"><a href="#hostel_tab"><i class="material-icons">home</i> Hotel room</a></li>
+                </ul>
+                <div id="departure_tab" class="col s12">
+                    <div class="col s12" ng-show="airportDeparture">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="~/Content/img/airport_departure.jpg">
                             </div>
-                            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header">
-                            <i class="material-icons">flight_land</i>
-                            Airport arrival : <span ng-if="airportArrival">{{airportArrival.model.name}}</span>
-                                <span ng-if="!airportArrival">please select an airport for your arrival</span>
+                            <div class="card-content">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Airport name</th>
+                                            <th>Airport code</th>
+                                            <th>Airport city</th>
+                                            <th>Airport country</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{airportDeparture.model.name}}</td>
+                                            <td>{{airportDeparture.model.code}}</td>
+                                            <td>{{airportDeparture.model.city}}</td>
+                                            <td>{{airportDeparture.model.country}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <label for="departure_date">Departure date</label>
+                                <input type="date" id="departure_date" class="datepicker">
                             </div>
-                            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">home</i>Hostel room : </div>
-                            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
+                <div id="arrival_tab" class="col s12">
+                    <div class="col s12" ng-show="airportArrival">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="~/Content/img/airport_arrival.jpg">
+                            </div>
+                            <div class="card-content">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Airport name</th>
+                                            <th>Airport code</th>
+                                            <th>Airport city</th>
+                                            <th>Airport country</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{airportArrival.model.name}}</td>
+                                            <td>{{airportArrival.model.code}}</td>
+                                            <td>{{airportArrival.model.city}}</td>
+                                            <td>{{airportArrival.model.country}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <label for="arrival_date">Arrival date</label>
+                                <input type="date" id="arrival_date" class="datepicker">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="hostel_tab" class="col s12">Test 3</div>
+            </div>
         </form>
     </div>
 </div>
