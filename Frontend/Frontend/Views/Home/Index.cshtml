@@ -1,17 +1,24 @@
-﻿@{ 
+﻿@{
     Layout = "~/Views/Shared/layout.cshtml";
 }
 <div ng-controller="HomeController">
-    <h1 ng-if="!ready">Chargement des données en cours</h1>
-    <div class="row" ng-if="ready">
+    <div class="row">
         <div class="col s4">
             <form>
                 <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s6">
                         <i class="material-icons prefix">flight takeoff</i>
                         <input id="icon_prefix" type="text" class="validate" ng-model="airportCity">
                         <label for="icon_prefix">Airport city</label>
-                        <a class="waves-effect waves-light btn" ng-class="{'disabled': airportCity == ''}" ng-click="loadAirportsByCity(airportCity)">Search airports in {{airportCity}}</a>
+                        <a class=" waves-effect waves-light btn" ng-class="{'disabled': airportCity == ''}" ng-click="loadAirportsByCity(airportCity)">Search airports in {{airportCity}}</a>
+                    </div>
+                    <div class="col s6">
+                        <div class="card-panel grey lighten-5 z-depth-1">
+                                <span class="black-text">
+                                    <span ng-if="!airportDeparture">No airport selected yet.</span>
+                                    <span ng-if="airportDeparture">You have selected {{airportDeparture.model.name}}</span>
+                                </span>
+                        </div>
                     </div>
                     <!--<div class="input-field col s12">
                         <i class="material-icons prefix">home</i>
@@ -23,15 +30,13 @@
         </div>
         <div class="col s8">
             <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
+                                  fit="false" icons='links.icons'></ui-gmap-polyline>
                 <ui-gmap-markers models="airports"
-                                 coords="'coords'" fit="true" doCluster=true click="onClickAirport">
-                    <ui-gmap-windows show="show">
-                        <div ng-non-bindable>{{name}} <a class="waves-effect waves-light btn">Select</a></div>
-                        
-                    </ui-gmap-windows>
+                                 coords="'coords'" fit="true" doCluster=true click="onClickAirport" options="'options'" modelsbyref="false">
                 </ui-gmap-markers>
             </ui-gmap-google-map>
         </div>
     </div>
-    
+
 </div>
