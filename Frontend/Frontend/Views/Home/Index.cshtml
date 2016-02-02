@@ -14,7 +14,7 @@
                 <ui-gmap-google-map center='map.center' zoom='map.zoom'>
                     <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
                                       fit="true" icons='links.icons'></ui-gmap-polyline>
-                    <ui-gmap-markers models="airports"
+                    <ui-gmap-markers models="markers"
                                      coords="'coords'" fit="true" doCluster=false click="onClickAirport" options="'options'" icon="'icon'" modelsbyref="false">
                     </ui-gmap-markers>
                 </ui-gmap-google-map>

@@ -219,6 +219,8 @@
   <ItemGroup>
     <Content Include="Content\angular-google-maps\angular-google-maps.css" />
     <Content Include="Content\home.css" />
+    <Content Include="Content\img\airport_arrival.jpg" />
+    <Content Include="Content\img\airport_departure.jpg" />
     <Content Include="Content\materialize\css\materialize.css" />
     <Content Include="Content\materialize\css\materialize.min.css" />
     <Content Include="Content\materialize\font\material-design-icons\LICENSE.txt" />
@@ -227,6 +229,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\icons\airport_icon_blue.png" />
     <Content Include="fonts\icons\airport_icon_green.png" />
+    <Content Include="fonts\icons\hotel_icon_blue.png" />
+    <Content Include="fonts\icons\hotel_icon_green.png" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
