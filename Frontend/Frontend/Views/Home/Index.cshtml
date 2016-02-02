@@ -33,7 +33,7 @@
                 <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
                                   fit="false" icons='links.icons'></ui-gmap-polyline>
                 <ui-gmap-markers models="airports"
-                                 coords="'coords'" fit="true" doCluster=true click="onClickAirport" options="'options'" icon="'icon'" modelsbyref="false">
+                                 coords="'coords'" fit="true" doCluster=false click="onClickAirport" options="'options'" icon="'icon'" modelsbyref="false">
                 </ui-gmap-markers>
             </ui-gmap-google-map>
         </div>

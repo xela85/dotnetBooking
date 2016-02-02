@@ -6,7 +6,6 @@
         $scope.airports = [];
         $scope.map = { center: { latitude: 47.282949, longitude: -1.521396 }, zoom: 8 };
         $scope.airportCity = '';
-        $scope.searchingDepartureAirports = false;
         $scope.airportsLinks = [];
     }
     
@@ -35,6 +34,11 @@
         if ($scope.airportDeparture && model == $scope.airportDeparture.model) {
             model.icon.url = getIconUrl('blue');
             $scope.airportDeparture = null;
+            $scope.airportArrival = null;
+            $scope.airportsLinks = [];
+            $scope.airports = [];
+            // reload the airport departures according to the airportCity model
+            $scope.loadAirportsByCity($scope.airportCity);
         } else {
             if ($scope.airportDeparture) {
                 $scope.airportDeparture.model.icon.url = getIconUrl('blue');
@@ -47,29 +51,41 @@
 
     // handle the click on a arrival airport 
     function onClickAirportArrival(marker, eventName, model) {
-        $scope.airportArrival = model;
-        // retrieve the index of the link to keep between airport departure and airport arrival
-        var index = $scope.airportsLinks.map(function (e) { return e.path[1]; }).indexOf(model.coords);
-        // the link found thanks to the index below
-        var airportLink = $scope.airportsLinks[index];
-        // reset all links
-        $scope.airportsLinks = [];
-        // add our link
-        $scope.airportsLinks.push(airportLink);
-        // reset all airports markers
-        $scope.airports = [];
-        // add airport arrival marker
-        $scope.airports.push($scope.airportArrival);
-        // add airport departure marker
-        $scope.airports.push($scope.airportDeparture.model);
-        // set the airport arrival marker to green
-        model.icon.url = getIconUrl('green');
+        if ($scope.airportArrival && model == $scope.airportArrival.model) {
+            model.icon.url = getIconUrl('blue');
+            $scope.airportArrival = null;
+            $scope.airportsLinks = [];
+            $scope.airports = [];
+            $scope.loadAirportsByDepartureCode($scope.airportDeparture.model.code);
+        } else {
+            if ($scope.airportArrival) {
+                $scope.airportArrival.model.icon.url = getIconUrl('blue');
+            }
+            model.icon.url = getIconUrl('green');
+            $scope.airportArrival = { marker: marker, model: model };
+            // retrieve the index of the link to keep between airport departure and airport arrival
+            var index = $scope.airportsLinks.map(function (e) { return e.path[1]; }).indexOf(model.coords);
+            // the link found thanks to the index below
+            var airportLink = $scope.airportsLinks[index];
+            // reset all links
+            $scope.airportsLinks = [];
+            // add our link
+            $scope.airportsLinks.push(airportLink);
+            // reset all airports markers
+            $scope.airports = [];
+            // add airport arrival marker
+            $scope.airports.push($scope.airportArrival.model);
+            // add airport departure marker
+            $scope.airports.push($scope.airportDeparture.model);
+        }   
     }
 
     // load airports according to a specified city
     $scope.loadAirportsByCity = function (city) {
+        $scope.airportsLinks = [];
         // check that the user typed something before searching
         if (city) {
+
             $http({
                 method: "GET",
                 url: "/api/airports/byCity/" + city
