@@ -1,29 +1,40 @@
 ﻿app.controller('HomeController', function ($scope, $http) {
     // variable initialization
     $scope.init = function () {
+        // to save the data model and marker of the airport departure
         $scope.airportDeparture = null;
+        // to save the data model and marker of the airport departure
         $scope.airportArrival = null;
+        // the array containing all the markers for the airports (departure or arrival)
         $scope.airports = [];
+        // our map
         $scope.map = { center: { latitude: 47.282949, longitude: -1.521396 }, zoom: 8 };
+        // binded to the searchbox
         $scope.airportCity = '';
+        // array containing all the links between the departure airport and the available arrival airports
         $scope.airportsLinks = [];
+        // cities loaded with autocomplete
         $scope.cities = [];
+        // to know if we have to do the autocomplete
         $scope.autocompleteCityIsAllowed = true;
-
+        // initialize the datepickers
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 15 // Creates a dropdown of 15 years to control year
         });
+        $scope.departureDate = '';
+        $scope.arrivalDate = '';
 
     }
+    // handle the change when the user searches a city
     $scope.handleChangeCity = function(city)
     {
         var verif = false
+        // check that the cities loaded contain the city in the model (which means the user clicked in the list)
         for(var i in $scope.cities)
         {
             if($scope.cities[i] === city)
             {
-                
                 verif = true;
                 break;
             }
@@ -38,6 +49,8 @@
             $scope.autocompleteCity(city);
         }
     }
+
+    // active the autocompletion on the cities
     $scope.autocompleteCity = function (airportCity) {
         if ($scope.autocompleteCityIsAllowed)
         {
@@ -47,7 +60,6 @@
                     url: "/api/airports/AutocompleteCity/" + airportCity
                 }).then(function mySucces(response) {
                     $scope.cities = response.data;
-                    console.log($scope.cities);
                 }, function myError(response) {
                     // osef
                 });
@@ -57,10 +69,12 @@
         }
         
     }
+    // return the url of the marker airport according to a color
     function getIconUrl(color) {
         return color === "blue" ? '../../../fonts/icons/airport_icon_blue.png' : '../../../fonts/icons/airport_icon_green.png';
 
     }
+
     // to generate a airport icon
     function generateMarkerIcon(color) {
         return { url: getIconUrl(color), scaledSize: new google.maps.Size(34, 44) };
