@@ -51,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HotelReservationContext.cs" />
+    <Compile Include="Models\HotelReservationDb.cs" />
+    <Compile Include="Models\IHotelReservationsApi.cs" />
+    <Compile Include="Models\HotelReservationContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
