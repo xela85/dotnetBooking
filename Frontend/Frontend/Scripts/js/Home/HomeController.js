@@ -1,4 +1,4 @@
-﻿app.controller('HomeController', function ($scope, $http, $location) {
+﻿app.controller('HomeController', function ($scope, $http, $location, $timeout) {
     // variable initialization
     $scope.init = function ()
     {
@@ -42,15 +42,12 @@
     function onClickAirportDeparture(marker, eventName, model)
     {
         if ($scope.airportDeparture && model == $scope.airportDeparture.model) {
-            console.log("step1");
             marker.setIcon($scope.generateMarkerIcon('blue'));
             $scope.airportDeparture = null;
         } else {
             if ($scope.airportDeparture) {
-                console.log("step2");
                 $scope.airportDeparture.marker.setIcon($scope.generateMarkerIcon('blue'));
             }
-            console.log("step3");
             marker.setIcon($scope.generateMarkerIcon('green'));
             $scope.airportDeparture = { marker: marker, model: model };
             $scope.loadAirportsByDepartureCode(model.code);
@@ -59,12 +56,10 @@
 
     // handle the click on a departure airport 
     function onClickAirportArrival(marker, eventName, model) {
-        marker.setIcon($scope.generateMarkerIcon('green'));
         $scope.airportArrival = model;
         var toDelete = [];
         for(var i in $scope.airportsLinks)
         {
-            console.log($scope.airportsLinks[i].path);
             if ($scope.airportsLinks[i].path[1] !== model.coords)
             {
                 toDelete.push($scope.airportsLinks[i]);
@@ -84,6 +79,7 @@
         for (var i in toDelete) {
             $scope.airports.splice($scope.airports.indexOf(toDelete[i]), 1);
         }
+        marker.setIcon($scope.generateMarkerIcon('green'));
     }
     
     // load airports according to a specified city

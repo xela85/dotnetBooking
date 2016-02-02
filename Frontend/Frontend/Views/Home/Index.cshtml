@@ -29,7 +29,7 @@
             </form>
         </div>
         <div class="col s8">
-            <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+            <ui-gmap-google-map center='map.center' zoom='map.zoom' >
                 <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
                                   fit="false" icons='links.icons'></ui-gmap-polyline>
                 <ui-gmap-markers models="airports"
