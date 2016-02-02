@@ -117,6 +117,11 @@ namespace libAirports.Models
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Airport> ByCity(String city)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [Serializable]

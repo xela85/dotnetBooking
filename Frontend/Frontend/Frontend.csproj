@@ -217,12 +217,16 @@
     <None Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\angular-google-maps\angular-google-maps.css" />
+    <Content Include="Content\home.css" />
     <Content Include="Content\materialize\css\materialize.css" />
     <Content Include="Content\materialize\css\materialize.min.css" />
     <Content Include="Content\materialize\font\material-design-icons\LICENSE.txt" />
     <Content Include="Content\materialize\font\material-design-icons\Material-Design-Icons.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\icons\airport_icon_blue.png" />
+    <Content Include="fonts\icons\airport_icon_green.png" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -232,6 +236,7 @@
     <Content Include="Scripts\angular-google-maps.js" />
     <Content Include="Scripts\angular-google-maps.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-simple-logger.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Content\materialize\font\roboto\Roboto-Thin.woff2" />
@@ -257,6 +262,7 @@
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\js\app.js" />
+    <Content Include="Scripts\js\Home\HomeController.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\materialize\materialize.js" />

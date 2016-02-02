@@ -12,5 +12,6 @@ namespace libAirports.Models
         Airport SearchByCode(string code);
         IEnumerable<Airport> SearchByName(string name);
         IEnumerable<Airport> To(string code);
+        IEnumerable<Airport> ByCity(string city);
     }
 }

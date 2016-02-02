@@ -1,0 +1,15 @@
+﻿.marker_labels{
+    font-weight: bold;
+    font-size: 13px;
+    background-color: #343434;
+    color: white;
+    padding: 0px 5px 0px 5px;
+    -moz-box-shadow: 5px 5px 5px 0px #656565;
+    -webkit-box-shadow: 5px 5px 5px 0px #656565;
+    -o-box-shadow: 5px 5px 5px 0px #656565;
+    box-shadow: 5px 5px 5px 0px #656565;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=134, Strength=5);
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
