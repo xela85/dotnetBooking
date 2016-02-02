@@ -49,26 +49,22 @@
     // handle the click on a arrival airport 
     function onClickAirportArrival(marker, eventName, model) {
         $scope.airportArrival = model;
-        var toDelete = [];
-        for (var i in $scope.airportsLinks) {
-            if ($scope.airportsLinks[i].path[1] !== model.coords) {
-                toDelete.push($scope.airportsLinks[i]);
-            }
-        }
-        for (var i in toDelete) {
-            $scope.airportsLinks.splice($scope.airportsLinks.indexOf(toDelete[i]), 1);
-        }
-        toDelete = [];
-        for (var i in $scope.airports) {
-            if ($scope.airports[i].code !== $scope.airportDeparture.model.code && $scope.airports[i].code !== $scope.airportArrival.code) {
-                toDelete.push($scope.airports[i]);
-            }
-        }
-        for (var i in toDelete) {
-            $scope.airports.splice($scope.airports.indexOf(toDelete[i]), 1);
-        }
+        // retrieve the index of the link to keep between airport departure and airport arrival
+        var index = $scope.airportsLinks.map(function (e) { return e.path[1]; }).indexOf(model.coords);
+        // the link found thanks to the index below
+        var airportLink = $scope.airportsLinks[index];
+        // reset all links
+        $scope.airportsLinks = [];
+        // add our link
+        $scope.airportsLinks.push(airportLink);
+        // reset all airports markers
+        $scope.airports = [];
+        // add airport arrival marker
+        $scope.airports.push($scope.airportArrival);
+        // add airport departure marker
+        $scope.airports.push($scope.airportDeparture.model);
+        // set the airport arrival marker to green
         model.icon.url = getIconUrl('green');
-        
     }
 
     // load airports according to a specified city
@@ -87,14 +83,12 @@
                 // osef
             });
         }
-
     }
 
     // load arrival airport based on a selected departure airport
     $scope.loadAirportsByDepartureCode = function (departureCode) {
         $scope.airports = [];
         $scope.airports.push($scope.airportDeparture.model);
-        //console.log($scope.airports);
         $http({
             method: "GET",
             url: "/api/airports/from/" + departureCode
