@@ -30,7 +30,7 @@
                     <div class="col s12" ng-show="airportDeparture">
                         <div class="card">
                             <div class="card-image">
-                                <img src="~/Content/img/airport_departure.jpg">
+                                <img src="~/Content/img/airport_departure.jpg" height="175">
                             </div>
                             <div class="card-content">
                                 <table>
@@ -56,12 +56,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col s12" ng-show="!airportDeparture">
+                        <div class="card-panel teal">
+                            <span class="white-text">
+                                In order to access to your departure airport, you have to :
+                                <ol>
+                                    <li ng-if="!airportCity">Search the city in the search bar</li>
+                                    <li ng-if="autocompleteCityIsAllowed">Select the city you want in the list</li>
+                                    <li>Select one of the available departure airport on the map</li>
+                                </ol>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <div id="arrival_tab" class="col s12">
                     <div class="col s12" ng-show="airportArrival">
                         <div class="card">
                             <div class="card-image">
-                                <img src="~/Content/img/airport_arrival.jpg">
+                                <img src="~/Content/img/airport_arrival.jpg" height="175">
                             </div>
                             <div class="card-content">
                                 <table>
@@ -85,6 +97,19 @@
                                 <label for="arrival_date">Arrival date</label>
                                 <input type="date" id="arrival_date" class="datepicker">
                             </div>
+                        </div>
+                    </div>
+                    <div class="col s12" ng-show="!airportArrival">
+                        <div class="card-panel teal">
+                            <span class="white-text">
+                                In order to access to your arrival airport, you have to :
+                                <ol>
+                                    <li ng-if="!airportCity">Search the city in the search bar</li>
+                                    <li ng-if="autocompleteCityIsAllowed">Select the city you want in the list</li>
+                                    <li ng-if="!airportDeparture">Select one of the available departure airport on the map</li>
+                                    <li>Select one of the available arrival airport on the map</li>
+                                </ol>
+                            </span>
                         </div>
                     </div>
                 </div>

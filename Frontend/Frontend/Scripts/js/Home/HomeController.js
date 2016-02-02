@@ -18,7 +18,6 @@
     }
     $scope.handleChangeCity = function(city)
     {
-        console.log(city);
         var verif = false
         for(var i in $scope.cities)
         {
@@ -31,13 +30,11 @@
         }
         if(verif)
         {
-            console.log("verif est true");
-            autocompleteCityIsAllowed = false;
+            $scope.autocompleteCityIsAllowed = false;
             $scope.loadAirportsByCity(city);
         } else
         {
-            console.log("verif est false");
-            autocompleteCityIsAllowed = true;
+            $scope.autocompleteCityIsAllowed = true;
             $scope.autocompleteCity(city);
         }
     }
