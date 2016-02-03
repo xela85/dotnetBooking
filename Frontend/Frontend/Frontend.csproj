@@ -78,7 +78,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -206,6 +206,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Controllers\AirportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -219,6 +220,8 @@
   <ItemGroup>
     <Content Include="Content\angular-google-maps\angular-google-maps.css" />
     <Content Include="Content\home.css" />
+    <Content Include="Content\img\airport_arrival.jpg" />
+    <Content Include="Content\img\airport_departure.jpg" />
     <Content Include="Content\materialize\css\materialize.css" />
     <Content Include="Content\materialize\css\materialize.min.css" />
     <Content Include="Content\materialize\font\material-design-icons\LICENSE.txt" />
@@ -227,6 +230,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\icons\airport_icon_blue.png" />
     <Content Include="fonts\icons\airport_icon_green.png" />
+    <Content Include="fonts\icons\hotel_icon_blue.png" />
+    <Content Include="fonts\icons\hotel_icon_green.png" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -292,6 +297,10 @@
     <Content Include="Scripts\jquery-2.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\data\data.csproj">
+      <Project>{7d4abc32-2799-4b10-ad1e-213bc40abf35}</Project>
+      <Name>data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libAirports\libAirports.csproj">
       <Project>{5a459071-ad14-4f86-af03-6304fbbd43c5}</Project>
       <Name>libAirports</Name>
@@ -299,6 +308,10 @@
     <ProjectReference Include="..\libHotels\libHotels.csproj">
       <Project>{6b8b62e0-5a95-4918-8588-780580240ac5}</Project>
       <Name>libHotels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\pusher\services.csproj">
+      <Project>{02ca8315-c455-40da-b873-93671326e628}</Project>
+      <Name>services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
