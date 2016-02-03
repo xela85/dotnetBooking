@@ -33,6 +33,11 @@ namespace libAirports.Models
                 return db.Flights.Where(x => x.ArrivalAirport.Code == code).Select(a => a.DepartureAirport);
             }
 
+            public IEnumerable<String> AutocompleteCity(String city)
+            {
+               return db.Airports.Where(x => x.City.ToLower().Contains(city.ToLower())).Select(x => x.City).Distinct();
+            }
+
             public IEnumerable<Airport> ByCity(String city)
             {
                 return db.Airports.Where(x => x.City.ToLower().Contains(city.ToLower()));

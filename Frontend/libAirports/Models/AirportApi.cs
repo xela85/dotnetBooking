@@ -122,6 +122,11 @@ namespace libAirports.Models
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<String> AutocompleteCity(String city)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [Serializable]

@@ -1,23 +1,82 @@
 ﻿app.controller('HomeController', function ($scope, $http) {
     // variable initialization
     $scope.init = function () {
+        // to save the data model and marker of the airport departure
         $scope.airportDeparture = null;
+        // to save the data model and marker of the airport departure
         $scope.airportArrival = null;
-        $scope.airports = [];
+        // the array containing all the markers
+        $scope.markers = [];
+        // our map
         $scope.map = { center: { latitude: 47.282949, longitude: -1.521396 }, zoom: 8 };
+        // binded to the searchbox
         $scope.airportCity = '';
-        $scope.searchingDepartureAirports = false;
+        // array containing all the links between the departure airport and the available arrival airports
         $scope.airportsLinks = [];
+        // cities loaded with autocomplete
+        $scope.cities = [];
+        // to know if we have to do the autocomplete
+        $scope.autocompleteCityIsAllowed = true;
+        // initialize the datepickers
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15 // Creates a dropdown of 15 years to control year
+        });
+        $scope.departureDate = '';
+        $scope.arrivalDate = '';
     }
-    
-    function getIconUrl(color)
-    {
-        return color === "blue" ? '../../../fonts/icons/airport_icon_blue.png' : '../../../fonts/icons/airport_icon_green.png';
 
+    // handle the change when the user searches a city
+    $scope.handleChangeCity = function(city)
+    {
+        var verif = false
+        // check that the cities loaded contain the city in the model (which means the user clicked in the list)
+        for(var i in $scope.cities)
+        {
+            if($scope.cities[i] === city)
+            {
+                verif = true;
+                break;
+            }
+        }
+        if(verif)
+        {
+            $scope.autocompleteCityIsAllowed = false;
+            $scope.loadAirportsByCity(city);
+        } else
+        {
+            $scope.autocompleteCityIsAllowed = true;
+            $scope.autocompleteCity(city);
+        }
     }
+
+    // active the autocompletion on the cities
+    $scope.autocompleteCity = function (airportCity) {
+        if ($scope.autocompleteCityIsAllowed)
+        {
+            if (airportCity) {
+                $http({
+                    method: "GET",
+                    url: "/api/airports/AutocompleteCity/" + airportCity
+                }).then(function mySucces(response) {
+                    $scope.cities = response.data;
+                }, function myError(response) {
+                    // osef
+                });
+            } else {
+                $scope.cities = [];
+            }
+        }
+        
+    }
+    // return the url of the marker airport according to a color
+    function getIconUrl(color, type) {
+        return '../../../fonts/icons/' + type + '_icon_' + color + '.png';
+    }
+
     // to generate a airport icon
-    function generateMarkerIcon(color) {
-        return { url: getIconUrl(color), scaledSize: new google.maps.Size(34, 44) };
+    function generateMarkerIcon(color, type) {
+        return { url: getIconUrl(color, type), scaledSize: new google.maps.Size(34, 44) };
     }
 
     // on click on a marker symbolizing a airport
@@ -25,21 +84,29 @@
         if (model.type === 'airportDeparture') {
             onClickAirportDeparture(marker, eventName, model);
         }
-        else {
+        else if(model.type === 'airportArrival'){
             onClickAirportArrival(marker, eventName, model);
+        } else
+        {
+            onClickHotel(marker, eventName, model);
         }
     };
 
     // handle the click on a departure airport 
     function onClickAirportDeparture(marker, eventName, model) {
         if ($scope.airportDeparture && model == $scope.airportDeparture.model) {
-            model.icon.url = getIconUrl('blue');
+            model.icon.url = getIconUrl('blue', 'airport');
             $scope.airportDeparture = null;
+            $scope.airportArrival = null;
+            $scope.airportsLinks = [];
+            $scope.markers = [];
+            // reload the airport departures according to the airportCity model
+            $scope.loadAirportsByCity($scope.airportCity);
         } else {
             if ($scope.airportDeparture) {
-                $scope.airportDeparture.model.icon.url = getIconUrl('blue');
+                $scope.airportDeparture.model.icon.url = getIconUrl('blue', 'airport');
             }
-            model.icon.url = getIconUrl('green');
+            model.icon.url = getIconUrl('green', 'airport');
             $scope.airportDeparture = { marker: marker, model: model };
             $scope.loadAirportsByDepartureCode(model.code);
         }
@@ -47,36 +114,67 @@
 
     // handle the click on a arrival airport 
     function onClickAirportArrival(marker, eventName, model) {
-        $scope.airportArrival = model;
-        // retrieve the index of the link to keep between airport departure and airport arrival
-        var index = $scope.airportsLinks.map(function (e) { return e.path[1]; }).indexOf(model.coords);
-        // the link found thanks to the index below
-        var airportLink = $scope.airportsLinks[index];
-        // reset all links
-        $scope.airportsLinks = [];
-        // add our link
-        $scope.airportsLinks.push(airportLink);
-        // reset all airports markers
-        $scope.airports = [];
-        // add airport arrival marker
-        $scope.airports.push($scope.airportArrival);
-        // add airport departure marker
-        $scope.airports.push($scope.airportDeparture.model);
-        // set the airport arrival marker to green
-        model.icon.url = getIconUrl('green');
+        if ($scope.airportArrival && model == $scope.airportArrival.model) {
+            model.icon.url = getIconUrl('blue', 'airport');
+            $scope.airportArrival = null;
+            $scope.airportsLinks = [];
+            $scope.markers = [];
+            $scope.loadAirportsByDepartureCode($scope.airportDeparture.model.code);
+        } else {
+            if ($scope.airportArrival) {
+                $scope.airportArrival.model.icon.url = getIconUrl('blue', 'airport');
+            }
+            model.icon.url = getIconUrl('green', 'airport');
+            $scope.airportArrival = { marker: marker, model: model };
+            // retrieve the index of the link to keep between airport departure and airport arrival
+            var index = $scope.airportsLinks.map(function (e) { return e.path[1]; }).indexOf(model.coords);
+            // the link found thanks to the index below
+            var airportLink = $scope.airportsLinks[index];
+            // reset all links
+            $scope.airportsLinks = [];
+            // add our link
+            $scope.airportsLinks.push(airportLink);
+            // reset all airports markers
+            $scope.markers = [];
+            // add airport arrival marker
+            $scope.markers.push($scope.airportArrival.model);
+            // add airport departure marker
+            $scope.markers.push($scope.airportDeparture.model);
+            $scope.loadHotelsByCity(model.city);
+        }
+    }
+
+    // handle the click on a hotel
+    function onClickHotel(marker, eventName, model) {
+        if ($scope.hotel && model == $scope.hotel.model) {
+            model.icon.url = getIconUrl('blue', 'hotel');
+            $scope.markers.splice($scope.markers.map(function (e) { return e.coords; }).indexOf(model.coords), 1);
+            $scope.loadHotelsByCity($scope.airportArrival.model.city);
+        } else {
+            if ($scope.hotel) {
+                $scope.hotel.model.icon.url = getIconUrl('blue', 'hotel');
+                $scope.markers.splice($scope.markers.map(function (e) { return e.coords; }).indexOf($scope.hotel.model.coords), 1);
+            }
+            model.icon.url = getIconUrl('green', 'hotel');
+            $scope.hotel = { marker: marker, model: model };
+            // add airport arrival marker
+            $scope.markers.push(model);
+        }
     }
 
     // load airports according to a specified city
     $scope.loadAirportsByCity = function (city) {
+        $scope.airportsLinks = [];
         // check that the user typed something before searching
         if (city) {
+
             $http({
                 method: "GET",
                 url: "/api/airports/byCity/" + city
             }).then(function mySucces(response) {
-                $scope.airports = [];
+                $scope.markers = [];
                 for (var i in response.data) {
-                    $scope.airports.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportDeparture', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name}, icon: generateMarkerIcon('blue')  });
+                    $scope.markers.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportDeparture', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name }, icon: generateMarkerIcon('blue', 'airport') });
                 }
             }, function myError(response) {
                 // osef
@@ -86,14 +184,14 @@
 
     // load arrival airport based on a selected departure airport
     $scope.loadAirportsByDepartureCode = function (departureCode) {
-        $scope.airports = [];
-        $scope.airports.push($scope.airportDeparture.model);
+        $scope.markers = [];
+        $scope.markers.push($scope.airportDeparture.model);
         $http({
             method: "GET",
             url: "/api/airports/from/" + departureCode
         }).then(function mySucces(response) {
             for (var i in response.data) {
-                $scope.airports.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportArrival', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name}, icon: generateMarkerIcon('blue')  });
+                $scope.markers.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportArrival', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name }, icon: generateMarkerIcon('blue', 'airport') });
             }
             $scope.generatePathBetweenAirports()
         }, function myError(response) {
@@ -109,11 +207,11 @@
         }
         var airportDepartureCoords = null;
         var airportsArrivalCoords = [];
-        for (var i in $scope.airports) {
-            if ($scope.airports[i].type === 'airportArrival') {
-                airportsArrivalCoords.push($scope.airports[i].coords);
-            } else {
-                airportDepartureCoords = $scope.airports[i].coords;
+        for (var i in $scope.markers) {
+            if ($scope.markers[i].type === 'airportArrival') {
+                airportsArrivalCoords.push($scope.markers[i].coords);
+            } else if($scope.markers[i].type === 'airportDeparture') {
+                airportDepartureCoords = $scope.markers[i].coords;
             }
         }
         for (var i in airportsArrivalCoords) {
@@ -127,6 +225,21 @@
                 }]
             })
         }
+    }
+
+    // load hotel around an arrival airport
+    $scope.loadHotelsByCity = function(city)
+    {
+        $http({
+            method: "GET",
+            url: "/api/hotels/" + city
+        }).then(function mySucces(response) {
+            for (var i in response.data) {
+                $scope.markers.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Long }, city: response.data[i].City, name: response.data[i].Name, type: 'hotel', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name }, icon: generateMarkerIcon('blue', 'hotel') });
+            }
+        }, function myError(response) {
+            // osef
+        });
     }
     $scope.init();
 
