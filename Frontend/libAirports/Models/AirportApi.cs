@@ -127,6 +127,41 @@ namespace libAirports.Models
         {
             throw new NotImplementedException();
         }
+
+        bool IAiports.AddAirports(IEnumerable<Airport> airports)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IAiports.FlightExists(string departureCityCode, string arrivalCityCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Airport> IAiports.GetAirports()
+        {
+            throw new NotImplementedException();
+        }
+
+        Airport IAiports.SearchByCode(string code)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Airport> IAiports.SearchByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Airport> IAiports.ByCity(string city)
+        {
+            throw new NotImplementedException();
+        }
+
+        Flight IAiports.Flight(int arrivalAirportId, int departureAirportId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [Serializable]

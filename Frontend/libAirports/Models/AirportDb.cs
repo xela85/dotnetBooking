@@ -17,7 +17,7 @@ namespace libAirports.Models
 
             public IEnumerable<Airport> SearchByName(string name)
             {
-                return db.Airports.Where(a => a.Name.Contains(name));
+                return db.Airports.Where(a => a.Name.ToLower().Contains(name.ToLower()));
             }
             public Airport SearchByCode(string code)
             {
@@ -33,9 +33,9 @@ namespace libAirports.Models
                 return db.Flights.Where(x => x.ArrivalAirport.Code == code).Select(a => a.DepartureAirport);
             }
 
-            public IEnumerable<String> AutocompleteCity(String city)
+            public Flight Flight(int arrivalAirportId, int departureAirportId)
             {
-               return db.Airports.Where(x => x.City.ToLower().Contains(city.ToLower())).Select(x => x.City).Distinct();
+                return db.Flights.FirstOrDefault(x => x.DepartureAirportId == departureAirportId && x.ArrivalAirportId == arrivalAirportId);
             }
 
             public IEnumerable<Airport> ByCity(String city)

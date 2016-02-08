@@ -30,6 +30,12 @@ namespace frontend.Controllers
             return airports.SearchByName(name);
         }
         [HttpGet]
+        [Route("api/flight/{arrivalAirportId}/{departureAirportId}")]
+        public Flight Flight(int arrivalAirportId, int departureAirportId)
+        {
+            return airports.Flight(arrivalAirportId, departureAirportId);
+        }
+        [HttpGet]
         [Route("api/airports/from/{code}")]
         public IEnumerable<Airport> From(String code)
         {
@@ -48,10 +54,10 @@ namespace frontend.Controllers
             return airports.ByCity(city);
         }
         [HttpGet]
-        [Route("api/airports/autocompleteCity/{city}")]
-        public IEnumerable<String> AutocompleteCity(String city)
+        [Route("api/airports/cities/{city}")]
+        public IEnumerable<String> Cities(String city)
         {
-            return airports.AutocompleteCity(city);
+            return airports.ByCity(city).Select(x => x.City).Distinct().OrderBy(x=>x.StartsWith(city)) ;
         }
     }
 }

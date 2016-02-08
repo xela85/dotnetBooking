@@ -2,119 +2,195 @@
     Layout = "~/Views/Shared/layout.cshtml";
 }
 <div ng-controller="HomeController">
-    <div class="row">
-        <form>
-            <div class="input-field col s6">
-                <i class="material-icons prefix">flight</i>
-                <input id="airport_departure" list="cities" type="text" class="validate" ng-model="airportCity" ng-model-options="{debounce: 1000}" ng-change="handleChangeCity(airportCity)">
-                <datalist id="cities">
-                    <option ng-repeat="city in cities" value="{{city}}"></option>
-                </datalist>
-                <label for="airport_departure">Departure Airport City</label>
-                <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-                    <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
-                                      fit="true" icons='links.icons'></ui-gmap-polyline>
-                    <ui-gmap-markers models="markers"
-                                     coords="'coords'" fit="true" doCluster=false click="onClickAirport" options="'options'" icon="'icon'" modelsbyref="false">
-                    </ui-gmap-markers>
-                </ui-gmap-google-map>
+    <input type="hidden" ng-init="urlPrefix='@VirtualPathUtility.ToAbsolute("~/")'" />
+    <div class="container">
+        <div class="col card-panel">
+            <div class="col s12">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        In order to book a travel, you have to : 
+                        <ol>
+                            <li ng-if="!departureCity">Search the city in the search bar</li>
+                            <li ng-if="autocompleteCityIsAllowed">Select the city you want in the list</li>
+                            <li ng-if="!airportDeparture">Select one of the available departure airport on the map</li>
+                            <li ng-if="!airportDeparture">Select one of the available arrival airport on the map</li>
+                            <li ng-if="!hotel">Select one of the available hotel in the arrival city on the map</li>
+                            <li ng-if="!travelReservation">Select the date of departure</li>
+                            <li ng-if="!hotelNightsNumbesr">Select the range of the travel</li>
+                        </ol>
+                    </span>
+                </div>
             </div>
-            <div class="col s6">
+            <div class="row">
+                <div class="input-field col l6">
+                    <i class="material-icons prefix">flight</i>
+                    <label for="airport_departure">Departure Airport City</label>
+                    <input id="airport_departure" list="cities" type="text" class="validate" ng-model="departureCity" ng-change="autocompleteCity(departureCity)">
+                    <div class="autocomplete">
+                        <div ng-repeat="city in cities" class="autocomplete-element" ng-click='handleChangeCity(city)'>
+                            <p><i class="material-icons">room</i> &nbsp;{{city}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-field col l6">
+                    <i class="material-icons prefix">today</i>
+                    <label for="hotel_arrival_date">Departure date</label>
+                    <input type="date" id="hotel_arrival_date" class="datepicker" ng-model="$parent.travelReservation.hotelArrivalDate">
+                </div>
+                <div class="input-field col l6">
+                    <i class="material-icons prefix">query_builder</i>
+                    <label for="hotel-nights-number" ">Number of nights </label>
+                    <input ng-disabled="!travelReservation.hotelArrivalDate" type="number" id="hotel-nights-number" ng-model="hotelNightsNumber" ng-change="changeNightsNumber()">
+                </div>
 
-                <ul class="tabs">
-                    <li class="tab col s4"><a class="active" href="#departure_tab"><i class="material-icons">flight_takeoff</i> Airport departure</a></li>
-                    <li class="tab col s4"><a href="#arrival_tab"><i class="material-icons">flight_land</i> Airport arrival</a></li>
-                    <li class="tab col s4 disabled"><a href="#hostel_tab"><i class="material-icons">home</i> Hotel room</a></li>
-                </ul>
-                <div id="departure_tab" class="col s12">
-                    <div class="col s12" ng-show="airportDeparture">
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="~/Content/img/airport_departure.jpg" height="175">
-                            </div>
-                            <div class="card-content">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Airport name</th>
-                                            <th>Airport code</th>
-                                            <th>Airport city</th>
-                                            <th>Airport country</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>{{airportDeparture.model.name}}</td>
-                                            <td>{{airportDeparture.model.code}}</td>
-                                            <td>{{airportDeparture.model.city}}</td>
-                                            <td>{{airportDeparture.model.country}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <label for="departure_date">Departure date</label>
-                                <input type="date" id="departure_date" class="datepicker" ng-model="departureDate">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12" ng-show="!airportDeparture">
-                        <div class="card-panel teal">
-                            <span class="white-text">
-                                In order to access to your departure airport, you have to :
-                                <ol>
-                                    <li ng-if="!airportCity">Search the city in the search bar</li>
-                                    <li ng-if="autocompleteCityIsAllowed">Select the city you want in the list</li>
-                                    <li>Select one of the available departure airport on the map</li>
-                                </ol>
-                            </span>
-                        </div>
-                    </div>
+                <div class="input-field col l6">
+                    <i class="material-icons prefix">today</i>
+                    <label for="hotel_departure_date">Hotel leaving date</label>
+                    <input disabled="disabled" type="date" id="hotel_departure_date" class="datepicker" ng-model="travelReservation.hotelDepartureDate">
                 </div>
-                <div id="arrival_tab" class="col s12">
-                    <div class="col s12" ng-show="airportArrival">
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="~/Content/img/airport_arrival.jpg" height="175">
-                            </div>
-                            <div class="card-content">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Airport name</th>
-                                            <th>Airport code</th>
-                                            <th>Airport city</th>
-                                            <th>Airport country</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>{{airportArrival.model.name}}</td>
-                                            <td>{{airportArrival.model.code}}</td>
-                                            <td>{{airportArrival.model.city}}</td>
-                                            <td>{{airportArrival.model.country}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <label for="arrival_date">Arrival date</label>
-                                <input type="date" id="arrival_date" class="datepicker" ng-model="arrivalDate">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12" ng-show="!airportArrival">
-                        <div class="card-panel teal">
-                            <span class="white-text">
-                                In order to access to your arrival airport, you have to :
-                                <ol>
-                                    <li ng-if="!airportCity">Search the city in the search bar</li>
-                                    <li ng-if="autocompleteCityIsAllowed">Select the city you want in the list</li>
-                                    <li ng-if="!airportDeparture">Select one of the available departure airport on the map</li>
-                                    <li>Select one of the available arrival airport on the map</li>
-                                </ol>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="hostel_tab" class="col s12">Test 3</div>
+
             </div>
-        </form>
+            <a class="waves-effect waves-light btn modal-trigger" ng-click="openModalReservation()">Book</a>
+            <div id="modal-reservation" class="modal">
+                <div class="modal-content">
+                    <h4>Recap of your travel</h4>
+                    <div class="col">
+
+                        <ul class="tabs">
+                            <li class="tab col s4"><a class="active" href="#flight_tab"><i class="material-icons">flight</i> Flight</a></li>
+                            <li class="tab col s4"><a href="#hotel_tab"><i class="material-icons">home</i> Hotel</a></li>
+                            <li class="tab col s4"><a href="#payment_tab"><i class="material-icons">payment</i> Payment</a></li>
+                        </ul>
+                        <div id="flight_tab" class="col s12">
+                            <div class="col s12">
+                                <div class="card">
+                                    <div class="card-image">
+                                        <img src="/Content/img/flight.jpg" height="175">
+                                    </div>
+                                    <div class="card-content">
+                                        <h5>Departure airport</h5>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Airport name</th>
+                                                    <th>Airport code</th>
+                                                    <th>Airport city</th>
+                                                    <th>Airport country</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{airportDeparture.model.name}}</td>
+                                                    <td>{{airportDeparture.model.code}}</td>
+                                                    <td>{{airportDeparture.model.city}}</td>
+                                                    <td>{{airportDeparture.model.country}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <h5>Arrival airport</h5>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Airport name</th>
+                                                    <th>Airport code</th>
+                                                    <th>Airport city</th>
+                                                    <th>Airport country</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{airportArrival.model.name}}</td>
+                                                    <td>{{airportArrival.model.code}}</td>
+                                                    <td>{{airportArrival.model.city}}</td>
+                                                    <td>{{airportArrival.model.country}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <h5>Price : {{flightPrice}} €</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="hotel_tab" class="col s12">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="~/Content/img/hotel.jpg" height="175">
+                                </div>
+                                <div class="card-content">
+                                    <h5>Hotel</h5>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Hotel name</th>
+                                                <th>Hotel city</th>
+                                                <th>Price per day</th>
+                                                <th>Number of days</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{travelReservation.hotel.Name}}</td>
+                                                <td>{{travelReservation.hotel.City}}</td>
+                                                <td>{{hotelNightsPrice}} €</td>
+                                                <td>{{hotelNightsNumber}}</td>
+                                                <td>{{hotelNightsPrice*hotelNightsNumber}} €</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="payment_tab" class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <h4>Payment</h4>
+                                    <h5>Total : {{hotelNightsPrice*hotelNightsNumber+flightPrice}} € </h5>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="input-field col l6">
+                                                <i class="material-icons prefix">perm_identity</i>
+                                                <label for="user-first-name">First Name</label>
+                                                <input type="text" id="user-first-name" ng-model="user.firstName">
+                                            </div>
+                                            <div class="input-field col l6">
+                                                <i class="material-icons prefix">perm_identity</i>
+                                                <label for="user-last-name">Last Name</label>
+                                                <input type="text" id="user-last-name" ng-model="user.lastName">
+                                            </div>
+                                        </div>
+
+                                        <div class="input-field col l6">
+                                            <i class="material-icons prefix">email</i>
+                                            <label for="user-mail">Mail</label>
+                                            <input type="email" id="user-mail" ng-model="user.mail">
+                                        </div>
+                                        <div class="input-field col l6">
+                                            <i class="material-icons prefix">credit_card</i>
+                                            <label for="user-bank-card">Bank card</label>
+                                            <input type="text" pattern="[0-9]{13,16}" id="user-bank-card" ng-model="user.bankCard">
+                                        </div>
+                                    </div>
+                                    <button ng-click="book()" href="#!" class=" modal-action modal-close waves-effect waves-green btn" ng-disabled="!(user.lastName && user.firstName && user.mail && user.bankCard)">Book</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+            <ui-gmap-polyline ng-repeat="links in airportsLinks" path="links.path" stroke="links.stroke"
+                              fit="true" icons='links.icons'></ui-gmap-polyline>
+            <ui-gmap-markers models="markers"
+                             coords="'coords'" fit="true" docluster=false click="onClickAirport" options="'options'" icon="'icon'" modelsbyref="false">
+            </ui-gmap-markers>
+        </ui-gmap-google-map>
     </div>
+
 </div>
+
+</div>
+
