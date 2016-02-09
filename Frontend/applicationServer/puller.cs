@@ -64,7 +64,7 @@ namespace applicationServer
 
         private void saveReservation(Reservation reservation)
         {
-            //using (var txScope = new TransactionScope())
+            using (var txScope = new TransactionScope())
             {
                 var hotelRes = new libHotelReservations.Models.HotelReservation();
                 hotelRes.DepartureDate = reservation.Hotel.DepartureDate;
@@ -77,6 +77,9 @@ namespace applicationServer
                 flightRes.ArrivalDate = reservation.Flight.ArrivalDate;
                 flightRes.FlightId = reservation.Flight.FlightId;
                 flights.book(flightRes);
+
+                // Finally, commit the MSDTC transaction
+                txScope.Complete();
             }
         }
 
