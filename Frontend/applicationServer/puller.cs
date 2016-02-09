@@ -64,6 +64,7 @@ namespace applicationServer
 
         private void saveReservation(Reservation reservation)
         {
+            try { 
             using (var txScope = new TransactionScope())
             {
                 hotels.book(reservation.Hotel);
@@ -71,6 +72,10 @@ namespace applicationServer
 
                 // Finally, commit the MSDTC transaction
                 txScope.Complete();
+            }
+            } catch(Exception e)
+            {
+                this.logger.WriteEntry(e.StackTrace + e.Message + e.InnerException.Message);
             }
         }
 
