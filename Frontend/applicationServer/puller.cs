@@ -57,7 +57,7 @@ namespace applicationServer
             }
             catch (Exception e)
             {
-                this.logger.WriteEntry(e.Message);
+                this.logger.WriteEntry(e.StackTrace + e.Message + e.InnerException.Message);
             }
             queue.BeginPeek();
         }
@@ -66,17 +66,8 @@ namespace applicationServer
         {
             using (var txScope = new TransactionScope())
             {
-                var hotelRes = new libHotelReservations.Models.HotelReservation();
-                hotelRes.DepartureDate = reservation.Hotel.DepartureDate;
-                hotelRes.ArrivalDate = reservation.Hotel.ArrivalDate;
-                hotelRes.HotelId = reservation.Hotel.HotelId;
-                hotels.book(hotelRes);
-
-                var flightRes = new libFlightReservations.Models.FlightReservation();
-                flightRes.DepartureDate = reservation.Flight.DepartureDate;
-                flightRes.ArrivalDate = reservation.Flight.ArrivalDate;
-                flightRes.FlightId = reservation.Flight.FlightId;
-                flights.book(flightRes);
+                hotels.book(reservation.Hotel);
+                flights.book(reservation.Flight);
 
                 // Finally, commit the MSDTC transaction
                 txScope.Complete();

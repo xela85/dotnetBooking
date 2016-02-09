@@ -1,6 +1,6 @@
 ﻿namespace libHotelReservations.Models
 {
-    using System;
+    using data.messaging;
     using System.Data.Entity;
 
     public class HotelReservationContext : DbContext
@@ -22,11 +22,5 @@
         public virtual DbSet<HotelReservation> HotelReservations { get; set; }
     }
 
-    public class HotelReservation
-    {
-        public int Id { get; set; }
-        public int HotelId { get; set; }
-        public DateTime ArrivalDate { get; set; }
-        public DateTime DepartureDate { get; set; }
-    }
+
 }

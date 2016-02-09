@@ -61,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\data\data.csproj">
+      <Project>{7d4abc32-2799-4b10-ad1e-213bc40abf35}</Project>
+      <Name>data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libHotels\libHotels.csproj">
       <Project>{6b8b62e0-5a95-4918-8588-780580240ac5}</Project>
       <Name>libHotels</Name>
