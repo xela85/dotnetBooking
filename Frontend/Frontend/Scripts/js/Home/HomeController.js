@@ -38,48 +38,47 @@
 
     // handle the change when the user searches a city
     $scope.handleChangeCity = function (city) {
-        var verif = false
-        // check that the cities loaded contain the city in the model (which means the user clicked in the list)
-        for (var i in $scope.cities) {
-            if ($scope.cities[i] === city) {
-                verif = true;
-                $scope.cities = [];
-
-                break;
-            }
-        }
-        if (verif) {
-            $scope.autocompleteCityIsAllowed = false;
-            $scope.loadAirportsByCity(city);
-        } else {
-            $scope.autocompleteCityIsAllowed = true;
-            $scope.autocompleteCity(city);
-        }
+        $scope.departureCity = city;
     }
-
-    // active the autocompletion on the cities
-    $scope.autocompleteCity = function (departureCity) {
-        if ($scope.autocompleteCityIsAllowed) {
-            if (departureCity) {
+    //Used to watch the departure city changing
+    $scope.$watch('departureCity', function (newValue, oldValue) {
+        if (newValue === $scope.cities[0])//if the searched city exist
+        {
+            $scope.cities = [];
+            $scope.loadAirportsByCity(newValue);
+        }
+        else
+        {
+            resetTravel();
                 $http({
                     method: "GET",
-                    url: $scope.urlPrefix +"api/airports/cities/" + departureCity
+                    url: $scope.urlPrefix + "api/airports/cities/" + $scope.departureCity
                 }).then(function mySucces(response) {
-                    $scope.cities = response.data.splice(0,4);
+                    if (response.data)
+                        $scope.cities = response.data.splice(0, 4);
 
                 }, function myError(response) {
                     // osef
                 });
-            } else {
-                $scope.cities = [];
-            }
         }
+    });
+    $scope.book = function () {
+        var flightRequest = $http.get($scope.urlPrefix + 'api/flight/' + $scope.airportDeparture.model.id + '/' + $scope.airportArrival.model.id);
+        flightRequest.then(function success(response) {
+            $scope.travelReservation.flight = response.data;
+            var bookRequest = $http.post($scope.urlPrefix + 'api/book/', JSON.stringify($scope.travelReservation));
+            bookRequest.then(function (response) {
+                $('#modal-reservation').closeModal();
+                Materialize.toast(response.data.Message, 3000, 'rounded')
+                
+            });
+        });
 
+        
     }
     $scope.changeNightsNumber = function () {
         $scope.travelReservation.hotelDepartureDate = $scope.travelReservation.hotelArrivalDate.addDays($scope.hotelNightsNumber);
     };
-
     $scope.openModalReservation = function()
     {
         $('#modal-reservation').openModal();
@@ -105,7 +104,14 @@
             onClickHotel(marker, eventName, model);
         }
     };
-
+    function resetTravel()
+    {
+        $scope.markers = [];
+        $scope.airportDeparture = null;
+        $scope.airportArrival = null;
+        $scope.airportsLinks = [];
+        $scope.hotel = null;
+    }
     // handle the click on a departure airport 
     function onClickAirportDeparture(marker, eventName, model) {
         if ($scope.airportDeparture && model == $scope.airportDeparture.model) {
@@ -182,34 +188,7 @@
     {
         return Math.floor(Math.random() * max) + min
     }
-    $scope.book = function()
-    {
-
-        $http.get($scope.urlPrefix +'api/flight/' + $scope.airportDeparture.model.id + '/' + $scope.airportArrival.model.id)
-            .then(function mySucces(response) {
-                $scope.travelReservation.flight = response.data;
-                
-            }, function myError(response) {
-                // osef
-            });
-        $scope.travelReservation.user = user;
-        $http({
-            method: 'POST',
-            url: $scope.urlPrefix +'api/book/',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data :JSON.stringify($scope.travelReservation)
-        }
-            ).then(function mySucces(response) {
-            $scope.markers = [];
-            for (var i in response.data) {
-                $scope.markers.push({ id: response.data[i].Id, coords: { latitude: response.data[i].Lat, longitude: response.data[i].Lng }, code: response.data[i].Code, city: response.data[i].City, name: response.data[i].Name, country: response.data[i].Country, type: 'airportDeparture', options: { labelClass: 'marker_labels', labelAnchor: '12 65', labelContent: response.data[i].Name }, icon: generateMarkerIcon('blue', 'airport') });
-            }
-        }, function myError(response) {
-            // osef
-        });
-    }
+    
     // load airports according to a specified city
     $scope.loadAirportsByCity = function (city) {
         $scope.airportsLinks = [];

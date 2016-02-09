@@ -36,7 +36,25 @@ namespace frontend.Controllers
                 return new Response(true,"Error : impossible to register your booking.");
             }
         }
-        
+        [HttpPost]
+        [Route("api/createTables/")]
+        public String createReservationTables()
+        {
+            try
+            {
+                libFlightReservations.Models.FlightReservationContext a = new libFlightReservations.Models.FlightReservationContext();
+                var b = new libHotelReservations.Models.HotelReservationContext();
+                b.HotelReservations.ToList();
+                a.FlightReservations.ToList();
+            }
+            catch(Exception e)
+            {
+                return e.Message;
+
+            }
+
+            return "ok";
+        }
     }
     public class User
     {

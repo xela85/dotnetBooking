@@ -1,7 +1,83 @@
 ﻿@{
     Layout = "";
 }
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="contactsApp">
+<head>
+    <title></title>
+    <script src="~/Scripts/angular.js"></script>
+    <link href="~/Content/materialize/css/materialize.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+        (function () {
+            "use strict";
+            angular.module('contactsApp', [])
+                .controller('myController', myController);
+            function myController($scope) {
+                $scope.contacts = [{ "firstName": "Alexandre", "lastName": "Lebrun" }, { "firstName": "Faouzi", "lastName": "Chiheb" }, { "firstName": "Ludovic", "lastName": "Sinquin" }, { "firstName": "Alex", "lastName": "Gourbillière" }, { "firstName": "Mathieu", "lastName": "Thebaud" }, { "firstName": "Jean-Baptiste", "lastName": "Robert" }, { "firstName": "Pierre", "lastName": "Cailleaud" }, { "firstName": "Nathanaël", "lastName": "Gimenez" }, { "firstName": "Nicolas", "lastName": "Hebrard" }, { "firstName": "Xavier", "lastName": "Huberdeau" }, { "firstName": "Arthur", "lastName": "Faugeras" }, { "firstName": "Florian", "lastName": "Lassont" }, { "firstName": "Maxime", "lastName": "Claveau" }, { "firstName": "Valentin", "lastName": "Cocaud" }, { "firstName": "Guillaume", "lastName": "Pouilloux" }, { "firstName": "Mael", "lastName": "Naccache" }, { "firstName": "Pierre", "lastName": "Geffriaud" }, { "firstName": "Cédric", "lastName": "Linqué" }, { "firstName": "Yann", "lastName": "Rolland" }];
+                $scope.addContact = function () {
+                    $scope.contacts.push($scope.user);
+                    $scope.user = {};
+                }
+                $scope.removeContact = function (index) {
+                    delete array[index];
+                }
+            };
 
-<div>
-    @ViewBag.Message
-</div>
+        })();
+
+    </script>
+</head>
+<body>
+    <div ng-controller="myController">
+        <div class="container">
+            <h1>Gestion de la classe</h1>
+            <div class="input-field col s6">
+                <i class="material-icons prefix">search</i>
+                <input id="search" type="text" ng-model="query">
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title black-text">Classement de la classe</span>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>Nom</td>
+                                <td>Prénom</td>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="contact in contacts|filter:query">
+                                <td>{{$index +1}}</td>
+                                <td>{{contact.firstName}}</td>
+                                <td>{{contact.lastName|uppercase}}</td>
+                                <td style="color:red"> <strong style="cursor:pointer">X</strong></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title black-text">Ajouter un élève</span>
+                    <br /> Nom
+                    <input type="text" name="name" ng-model="user.lastName" /><br />
+                    Prenom
+                    <input type="text" name="name" ng-model="user.firstName" /><br />
+                    Moyenne
+                    <input type="number" name="name" ng-model="user.moyenne" /><br />
+                    <button class="btn btn-large" ng-click="addContact()">Ajouter contact</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
