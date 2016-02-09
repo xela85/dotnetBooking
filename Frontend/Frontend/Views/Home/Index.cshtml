@@ -6,26 +6,24 @@
     <div class="container">
         <div class="col card-panel">
             <div class="col s12">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        In order to book a travel, you have to : 
+                <div class="card-panel teal" ng-if="!departureCity||!airportDeparture||!airportArrival||!hotel||!travelReservation||!hotelNightsNumber">
+                    <div class="white-text">
+                        In order to book a travel, you have to :
                         <ol>
                             <li ng-if="!departureCity">Search the city in the search bar</li>
-                            <li ng-if="autocompleteCityIsAllowed">Select the city you want in the list</li>
-                            <li ng-if="!airportDeparture">Select one of the available departure airport on the map</li>
-                            <li ng-if="!airportDeparture">Select one of the available arrival airport on the map</li>
-                            <li ng-if="!hotel">Select one of the available hotel in the arrival city on the map</li>
+                            <li ng-if="!airportDeparture||!airportArrival">Select a departure  and an arrival airport on the map</li>
+                            <li ng-if="!hotel">Select one of the available hotel in the arrival city</li>
                             <li ng-if="!travelReservation">Select the date of departure</li>
-                            <li ng-if="!hotelNightsNumbesr">Select the range of the travel</li>
+                            <li ng-if="!hotelNightsNumber">Select the duration of the travel</li>
                         </ol>
-                    </span>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col l6">
                     <i class="material-icons prefix">flight</i>
                     <label for="airport_departure">Departure Airport City</label>
-                    <input id="airport_departure" list="cities" type="text" class="validate" ng-model="departureCity" ng-change="autocompleteCity(departureCity)">
+                    <input id="airport_departure" list="cities" type="text" class="validate" ng-model="departureCity" >
                     <div class="autocomplete">
                         <div ng-repeat="city in cities" class="autocomplete-element" ng-click='handleChangeCity(city)'>
                             <p><i class="material-icons">room</i> &nbsp;{{city}}</p>
@@ -50,7 +48,7 @@
                 </div>
 
             </div>
-            <a class="waves-effect waves-light btn modal-trigger" ng-click="openModalReservation()">Book</a>
+            <button class="waves-effect waves-light btn" ng-click="openModalReservation()" ng-disabled="!departureCity||!airportDeparture||!airportArrival||!hotel||!travelReservation||!hotelNightsNumber">Book</button>
             <div id="modal-reservation" class="modal">
                 <div class="modal-content">
                     <h4>Recap of your travel</h4>
@@ -68,7 +66,6 @@
                                         <img src="/Content/img/flight.jpg" height="175">
                                     </div>
                                     <div class="card-content">
-                                        <h5>Departure airport</h5>
                                         <table>
                                             <thead>
                                                 <tr>
@@ -80,33 +77,20 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>{{airportDeparture.model.name}}</td>
+                                                    <td><strong>Departure : </strong>{{airportDeparture.model.name}}</td>
                                                     <td>{{airportDeparture.model.code}}</td>
                                                     <td>{{airportDeparture.model.city}}</td>
                                                     <td>{{airportDeparture.model.country}}</td>
                                                 </tr>
-                                            </tbody>
-                                        </table>
-                                        <h5>Arrival airport</h5>
-                                        <table>
-                                            <thead>
                                                 <tr>
-                                                    <th>Airport name</th>
-                                                    <th>Airport code</th>
-                                                    <th>Airport city</th>
-                                                    <th>Airport country</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>{{airportArrival.model.name}}</td>
+                                                    <td><strong>Arrival : </strong>{{airportArrival.model.name}}</td>
                                                     <td>{{airportArrival.model.code}}</td>
                                                     <td>{{airportArrival.model.city}}</td>
                                                     <td>{{airportArrival.model.country}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <h5>Price : {{flightPrice}} €</h5>
+                                        <h5>Total : {{flightPrice}} €</h5>
                                     </div>
                                 </div>
                             </div>
@@ -138,6 +122,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <h5>Total : {{hotelNightsPrice*hotelNightsNumber}} €</h5>
                                 </div>
                             </div>
                         </div>
@@ -151,27 +136,27 @@
                                             <div class="input-field col l6">
                                                 <i class="material-icons prefix">perm_identity</i>
                                                 <label for="user-first-name">First Name</label>
-                                                <input type="text" id="user-first-name" ng-model="user.firstName">
+                                                <input type="text" id="user-first-name" ng-model="travelReservation.user.firstName">
                                             </div>
                                             <div class="input-field col l6">
                                                 <i class="material-icons prefix">perm_identity</i>
                                                 <label for="user-last-name">Last Name</label>
-                                                <input type="text" id="user-last-name" ng-model="user.lastName">
+                                                <input type="text" id="user-last-name" ng-model="travelReservation.user.lastName">
                                             </div>
                                         </div>
 
                                         <div class="input-field col l6">
                                             <i class="material-icons prefix">email</i>
                                             <label for="user-mail">Mail</label>
-                                            <input type="email" id="user-mail" ng-model="user.mail">
+                                            <input type="email" id="user-mail" ng-model="travelReservation.user.mail">
                                         </div>
                                         <div class="input-field col l6">
                                             <i class="material-icons prefix">credit_card</i>
                                             <label for="user-bank-card">Bank card</label>
-                                            <input type="text" pattern="[0-9]{13,16}" id="user-bank-card" ng-model="user.bankCard">
+                                            <input type="text" pattern="[0-9]{13,16}" id="user-bank-card" ng-model="travelReservation.user.bankCard">
                                         </div>
                                     </div>
-                                    <button ng-click="book()" href="#!" class=" modal-action modal-close waves-effect waves-green btn" ng-disabled="!(user.lastName && user.firstName && user.mail && user.bankCard)">Book</button>
+                                    <button ng-click="book()" href="#!" class="waves-effect waves-green btn" ng-disabled="!(travelReservation.user.lastName && travelReservation.user.firstName && travelReservation.user.mail && travelReservation.user.bankCard)">Book</button>
                                 </div>
                             </div>
                         </div>

@@ -1,8 +1,8 @@
 ﻿namespace libHotelReservations.Models
 {
-    using data.messaging;
+    using System;
     using System.Data.Entity;
-
+    using data.messaging;
     public class HotelReservationContext : DbContext
     {
         // Votre contexte a été configuré pour utiliser une chaîne de connexion « HotelReservationContext » du fichier 
@@ -22,5 +22,5 @@
         public virtual DbSet<HotelReservation> HotelReservations { get; set; }
     }
 
-
+    
 }

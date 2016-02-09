@@ -2,9 +2,10 @@
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using data.messaging;
 namespace libAirports.Models
 {
-    
+
     public class AirportContext : DbContext
     {
         // Votre contexte a été configuré pour utiliser une chaîne de connexion « AirportContext » du fichier 
@@ -36,28 +37,4 @@ namespace libAirports.Models
         public virtual DbSet<Flight> Flights { get; set; }
     }
 
-    public class Airport
-    {
-        [Key]
-        public int Id { get; set; }
-        [Index("CodeIndex", IsUnique = true), StringLength(3), Required]
-        public String Code { get; set; }
-        public String Name { get; set; }
-        public String City { get; set; }
-        public String Country { get; set; }
-        public String Timezone { get; set; }
-        public double Lat { get; set; }
-        public double Lng { get; set; }
-    }
-    public class Flight
-    {
-        public int Id { get; set; }
-        [Required]
-        public int DepartureAirportId { get; set; }
-        [Required]
-        public int ArrivalAirportId { get; set; }
-
-        public Airport DepartureAirport { get; set; }
-        public Airport ArrivalAirport { get; set; }
-    }
 }

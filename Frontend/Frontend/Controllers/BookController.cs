@@ -7,7 +7,6 @@ using System.Web.Http;
 using pusher;
 using data.messaging;
 using libHotels.Models;
-using libAirports.Models;
 namespace frontend.Controllers
 {
     public class BookController : ApiController
@@ -36,15 +35,27 @@ namespace frontend.Controllers
                 return new Response(true,"Error : impossible to register your booking.");
             }
         }
-        
+        [HttpPost]
+        [Route("api/createTables/")]
+        public String createReservationTables()
+        {
+            try
+            {
+                libFlightReservations.Models.FlightReservationContext a = new libFlightReservations.Models.FlightReservationContext();
+                var b = new libHotelReservations.Models.HotelReservationContext();
+                b.HotelReservations.ToList();
+                a.FlightReservations.ToList();
+            }
+            catch(Exception e)
+            {
+                return e.Message;
+
+            }
+
+            return "ok";
+        }
     }
-    public class User
-    {
-        public String FirstName { get; set; }
-        public String LastName { get; set; }
-        public String Mail { get; set; }
-        public String BankCard { get; set; }
-    }
+   
     public class Response
     {
         public bool Error { get; set; }
