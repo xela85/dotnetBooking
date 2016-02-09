@@ -14,5 +14,6 @@ namespace libAirports.Models
         IEnumerable<Airport> SearchByName(string name);
         IEnumerable<Airport> To(string code);
         IEnumerable<Airport> ByCity(string city);
-    }
+        Flight Flight(int arrivalAirportId, int departureAirportId);
+}
 }

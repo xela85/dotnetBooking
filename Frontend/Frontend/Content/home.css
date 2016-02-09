@@ -13,3 +13,25 @@
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
+.angular-google-map-container {
+  height: 600px;
+}
+.autocomplete{
+    width: 90%;
+    float: right;
+    position: absolute;
+    left: 54px;
+    z-index: 10;
+     border-right:1px solid #808080;
+
+}
+.autocomplete-element
+{
+    cursor:pointer;
+    margin-left: 15px;
+    background: white;
+    padding: 1px;
+    border-bottom:1px solid #808080;
+    border-left:1px solid #808080;
+
+}
