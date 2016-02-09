@@ -2,7 +2,7 @@
 {
     using System;
     using System.Data.Entity;
-
+    using data.messaging;
     public class HotelReservationContext : DbContext
     {
         // Votre contexte a été configuré pour utiliser une chaîne de connexion « HotelReservationContext » du fichier 
@@ -22,11 +22,5 @@
         public virtual DbSet<HotelReservation> HotelReservations { get; set; }
     }
 
-    public class HotelReservation
-    {
-        public int Id { get; set; }
-        public int HotelId { get; set; }
-        public DateTime ArrivalDate { get; set; }
-        public DateTime DepartureDate { get; set; }
-    }
+    
 }

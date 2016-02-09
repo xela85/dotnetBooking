@@ -7,7 +7,6 @@ using System.Web.Http;
 using pusher;
 using data.messaging;
 using libHotels.Models;
-using libAirports.Models;
 namespace frontend.Controllers
 {
     public class BookController : ApiController
@@ -56,13 +55,7 @@ namespace frontend.Controllers
             return "ok";
         }
     }
-    public class User
-    {
-        public String FirstName { get; set; }
-        public String LastName { get; set; }
-        public String Mail { get; set; }
-        public String BankCard { get; set; }
-    }
+   
     public class Response
     {
         public bool Error { get; set; }

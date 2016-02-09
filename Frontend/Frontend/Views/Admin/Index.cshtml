@@ -19,7 +19,7 @@
                     $scope.user = {};
                 }
                 $scope.removeContact = function (index) {
-                    delete array[index];
+                    $scope.contacts.splice(index,1);
                 }
             };
 

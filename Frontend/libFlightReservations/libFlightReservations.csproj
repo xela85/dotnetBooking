@@ -61,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\data\data.csproj">
+      <Project>{7d4abc32-2799-4b10-ad1e-213bc40abf35}</Project>
+      <Name>data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libAirports\libAirports.csproj">
       <Project>{5a459071-ad14-4f86-af03-6304fbbd43c5}</Project>
       <Name>libAirports</Name>

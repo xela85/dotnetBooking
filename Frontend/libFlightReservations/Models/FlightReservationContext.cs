@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
-
+    using data.messaging;
     public class FlightReservationContext : DbContext
     {
         // Votre contexte a été configuré pour utiliser une chaîne de connexion « FlightReservationContext » du fichier 
@@ -23,11 +23,5 @@
         public virtual DbSet<FlightReservation> FlightReservations { get; set; }
     }
 
-    public class FlightReservation
-    {
-        public int Id { get; set; }
-        public int FlightId { get; set; }
-        public DateTime ArrivalDate { get; set; }
-        public DateTime DepartureDate { get; set; }
-    }
+   
 }
