@@ -24,6 +24,9 @@ namespace data.messaging
         public int HotelId { get; set; }
         public DateTime ArrivalDate { get; set; }
         public DateTime DepartureDate { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Mail { get; set; }
     }
 
     public class FlightReservation
@@ -32,6 +35,9 @@ namespace data.messaging
         public int FlightId { get; set; }
         public DateTime ArrivalDate { get; set; }
         public DateTime DepartureDate { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Mail { get; set; }
     }
     public class Airport
     {
