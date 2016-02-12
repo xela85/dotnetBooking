@@ -11,8 +11,7 @@ namespace data.messaging
     public class Reservation
     {
 
-    public const String QUEUE_IP = "127.0.0.1";
-    public const String QUEUE_PATH = @".\private$\dotNetBooking";
+    public const String QUEUE_PATH = @"formatName:DIRECT=TCP:192.168.137.124\private$\dotNetBooking";
 
     public HotelReservation Hotel { get; set; }
         public FlightReservation Flight { get; set; }

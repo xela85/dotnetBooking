@@ -310,14 +310,6 @@
       <Project>{5a459071-ad14-4f86-af03-6304fbbd43c5}</Project>
       <Name>libAirports</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libFlightReservations\libFlightReservations.csproj">
-      <Project>{86b4172e-6a3c-4417-a3d4-791478502ad7}</Project>
-      <Name>libFlightReservations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libHotelReservations\libHotelReservations.csproj">
-      <Project>{bd28928f-5306-4d2c-97f2-ac6ef9390945}</Project>
-      <Name>libHotelReservations</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libHotels\libHotels.csproj">
       <Project>{6b8b62e0-5a95-4918-8588-780580240ac5}</Project>
       <Name>libHotels</Name>

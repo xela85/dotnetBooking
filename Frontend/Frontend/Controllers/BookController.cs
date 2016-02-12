@@ -35,7 +35,7 @@ namespace frontend.Controllers
                 return new Response(true,"Error : impossible to register your booking.");
             }
         }
-        [HttpPost]
+        /*[HttpPost]
         [Route("api/createTables/")]
         public String createReservationTables()
         {
@@ -53,7 +53,7 @@ namespace frontend.Controllers
             }
 
             return "ok";
-        }
+        }*/
     }
    
     public class Response
